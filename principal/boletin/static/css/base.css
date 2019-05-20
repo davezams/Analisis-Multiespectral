@@ -1,0 +1,127 @@
+
+/* Eliminar la decoración de las listas sin orden
+*/
+ul {
+  list-style-type: none;
+}
+img {
+  width: 100%;
+}
+
+/* Botones para agregar y quitar botones para subir imágenes de diagnóstico
+*/
+#add_file_entry, #del_file_entry {
+  font-size: 15pt;
+  text-decoration: none;
+}
+
+/* Establecer que las fotos de los diagnósticos se ubiquen una al lado de otra.
+*/
+.photos_diag_div img{
+  float: left;
+}
+.photos_diag_div img:last-child{
+  float: none;
+}
+
+/* Modifica los botones en el inicio de sesión
+*/
+#buttons_list li {
+  text-align: center;
+  border-top-width:1px;
+  margin-top: 40px;
+}
+
+.login-register-button {
+  font-size: 11vw;
+  color: #157dc3;
+}
+
+
+/* Modifica el aspecto de la información mostrada de un paciente
+*/
+div[class="caption"] h3 {
+    margin-top: 0px;
+}
+
+.paciente-tn {
+    margin-bottom: 0px;
+}
+
+.pacientebox {
+  height:200px;
+  width:100%;
+}
+
+.pacientebox img {
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+/* Ubicar los datos del paciente en el centro
+*/
+.paciente-main-label {
+    text-align: center;
+}
+
+/* Modifica a los 3 botones mostrado en un diagnostico activo.
+*/
+.bigicons {
+  font-size: 15pt;
+  color: #004e35;
+}
+
+/*
+*/
+div .list-group-item {
+  cursor: pointer;
+  cursor: hand;
+}
+
+
+/* Ubica los nombres de los campos al borde superior del campo, esto
+   aplica para los campos de texto grandes como los TextArea
+*/
+div label {
+  vertical-align:top;
+}
+
+
+/* Oculta las fotos de los modales del diagnóstico */
+.foto-dialogo {
+  display: none;
+}
+
+/* Cuando se muestra una foto, el fondo se pone en negro, en lugar de gris*/
+.ui-widget-overlay {
+  background: #000;
+}
+
+.navbar {
+  border-radius: 4px;
+}
+
+.navbar-collapse {
+  border-top-width: 0px;
+}
+
+#logo-navbar {
+  margin-left: 10px;
+  width:30px;
+  height:30px;
+}
+
+a[class="navbar-brand navbar-left"] {
+  padding-top: 10px;
+}
+
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+  background-color: #b5d6f3;
+  color: #000;
+}
+
+.list-group-item.active .list-group-item-text, .list-group-item.active:focus .list-group-item-text, .list-group-item.active:hover .list-group-item-text {
+  color: #000;
+}

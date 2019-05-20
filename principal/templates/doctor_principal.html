@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block head_title %}Principal{% endblock %}
+{% block doctor_activo %}active{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+  <h1>{{ doctor_id.get_etiqueta }}.</h1>
+</div>
+<div class="container">
+  {% if success_msg %}
+  <div class="alert alert-success">
+    <strong>{{ success_msg }}</strong>
+  </div>
+  {% endif %}
+  <div class="row-fluid">
+    <ul class="nav pull-right">
+      <li>
+        <a href="{% url 'registrar_paciente' doctor_id.id %}">
+          <i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Paciente
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="container">
+  {% if pacientes %}
+  <div class="row-fluid">
+  {% load i18n %}
+
+    {% language 'es' %}
+    {% for p in pacientes %}
+    <div class="paciente-main-label col-md-3 thumbnail">
+      <div class="pacientebox">
+        <img src="{{ p.foto_paciente.url }}" class="paciente-tn"/>
+      </div>
+      <div class="caption">
+        <h3>{{p.nombres}} {{p.apellidos}}</h3>
+        <i class="fa fa-credit-card" aria-hidden="true"></i>&nbsp;{{ p.cedula }} &nbsp;
+        <i class="fa fa-phone" aria-hidden="true"></i>&nbsp;{{p.telefono_celular}}<br/>
+        <i class="fa fa-envelope" aria-hidden="true"></i>&nbsp;{{p.email}}<br/>
+        <i class="fa fa-calendar-o" aria-hidden="true"></i>&nbsp;{{ p.fecha_nacimiento|date:"d-m-Y" }}<br/>
+        <i class="fa fa-map-marker" aria-hidden="true"></i>&nbsp;{{ p.zona_residencia}}, Edo. {{ p.get_estado_residencia_display }}
+        <br/>
+        <a class="btn btn-default btn-sm" alt="Editar Paciente" href="{% url 'editar_paciente' p.id %}">
+          <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>&nbsp;Editar
+        </a> &nbsp;
+        <a class="btn btn-default btn-sm" alt="Ver diagnosticos" href="{% url 'paciente_principal' p.id %}">
+          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;Diagnósticos
+        </a> &nbsp;
+        <a class="btn btn-default btn-sm" alt="Ver recipes" href="{% url 'recipes_principal' p.id %}">
+          <span class="fa fa-wpforms" aria-hidden="true"></span>&nbsp;Recipes
+        </a> &nbsp;
+        <a class="btn btn-default btn-sm" href="{% url 'eliminar_paciente' p.id %}">
+          <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+    {%endfor%}
+    {% endlanguage %}
+
+  </div>
+  {% else %}
+  <h2>
+    <p class="bg-warning">
+      No ha registrado pacientes
+    </p>
+  </h2>
+  {% endif %}
+</div>
+{% endblock %}

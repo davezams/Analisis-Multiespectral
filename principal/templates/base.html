@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>C.H.E.T. Dermatología | {% block head_title %} {% endblock %}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {% load static %}
+    <link rel='stylesheet' href='{% static "css/font-awesome.min.css"%}'/>
+    <link rel='stylesheet' href='{% static "css/bootstrap.min.css"%}'/>
+    <link rel='stylesheet' href='{% static "css/bootstrap-responsive.min.css"%}'/>
+    <link rel='stylesheet' href='{% static "css/jquery-ui.css"%}'/>
+    <link rel='stylesheet' href='{% static "css/jquery-ui.structure.css"%}'/>
+    <link rel='stylesheet' href='{% static "css/jquery-ui.theme.css"%}'/>
+    <link rel='stylesheet' href='{% static "css/base.css"%}'/>
+    <!-- Scripts -->
+    <script src='{% static "js/jquery-3.1.0.min.js"%}'></script>
+    <script src='{% static "js/bootstrap.min.js"%}'></script>
+    <script src='{% static "js/jquery-ui.js"%}'></script>
+    <script src='{% static "js/jquery-ui-es.js"%}'></script>
+    <script src='{% static "js/jquery-cookie.js"%}'></script>
+    <script src='{% static "js/base.js"%}'></script>
+    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
+</head>
+<body>
+    <!-- header -->
+    <div class="container-fluid">
+        <div class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#site-bar-collapse" aria-expanded="false">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand navbar-left" href="{% url 'inicio' %}">
+                <img id="logo-navbar" src="{% static 'logo.png'%}"/>
+                </a>
+                <a class="navbar-brand" href="{% url 'inicio' %}">Dermatología</a>
+            </div>
+            <div class="collapse navbar-collapse" id="site-bar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="{% block inicio_activo %} {% endblock %}"><a href="{% url 'inicio' %}">Inicio</a></li>
+                    {% if doctor_id %}
+                    <li class="{% block doctor_activo %} {% endblock %}"><a href="{% url 'doctor_principal' doctor_id.id %}">Doctor</a></li>
+                    {% endif %}
+                    {% if paciente_id %}
+                    <li class="{% block paciente_activo %} {% endblock %}"><a href="{% url 'paciente_principal' paciente_id.id %}">Paciente</a></li>
+                    {% endif %}
+                </ul>
+                    {% if request.user.is_authenticated %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="{% block ver_diagnostico %} {% endblock %}">
+                        <a href="{% url 'ver_diagnostico' doctor_id.id %}">
+                            Análisis de Nevus <i title="diag" class="" aria-hidden="true"></i>&nbsp;
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'editar_doctor' doctor_id.id %}">
+                            <i title="Configuración" class="fa fa-cogs" aria-hidden="true"></i>&nbsp;
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'cerrar_sesion' %}">
+                            Salir&nbsp;<i class="fa fa-sign-out" aria-hidden="true"></i>
+                        </a>
+                    </li>
+                </ul>
+                    {% endif %}
+            </div>
+        </div>
+        </div>
+    </div>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

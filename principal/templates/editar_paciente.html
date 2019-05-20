@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block head_title %}Editar Paciente{% endblock %}
+{% block paciente_activo %}active{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="row-fluid">
+    <div class=" col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h3>Editar Paciente</h3>
+          {% if error_message %}
+          <p><strong>{{ error_message }}</strong></p>
+          {% endif %}
+          <form class="" role="form" action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% include 'plantilla_registro_campo.html' %}
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" onclick="javascript:history.go(-1);" class="btn btn-warning">Atrás</button>&nbsp;&nbsp;
+                <button type="submit" class="btn btn-success">Actualizar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+{% endblock %}

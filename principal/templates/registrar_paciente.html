@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block head_title %}Registrar Paciente{% endblock %}
+{% block doctor_activo %}active{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="row-fluid">
+    <div class=" col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h3>Registrar Nuevo Paciente</h3>
+          {% if error_message %}
+          <p><strong>{{ error_message }}</strong></p>
+          {% endif %}
+          <form class="" role="form" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% include 'plantilla_registro_campo.html' %}
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-success">Registrar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+{% endblock %}

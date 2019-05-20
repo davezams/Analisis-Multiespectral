@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% block head_title %}Editar Paciente{% endblock %}
+{% block ver_diagnostico %}active{% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+	    {% load static %}
+		<link href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.js"></script> -->
+        <link rel='stylesheet' href='{% static "css/fileinput.css"%}'/>
+        <script src='{% static "js/fileinput.js"%}'></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script>
+        	function des(){
+        		document.getElementById("loader").style.display = "none";
+        	}
+        </script>
+        <style>
+			/* Center the loader */
+			#loader {
+			  position: absolute;
+			  left: 50%;
+			  top: 50%;
+			  z-index: 1;
+			  width: 150px;
+			  height: 150px;
+			  margin: -75px 0 0 -75px;
+			  border: 16px solid #f3f3f3;
+			  border-radius: 50%;
+			  border-top: 16px solid #3498db;
+			  width: 120px;
+			  height: 120px;
+			  -webkit-animation: spin 2s linear infinite;
+			  animation: spin 2s linear infinite;
+			}
+
+			@-webkit-keyframes spin {
+			  0% { -webkit-transform: rotate(0deg); }
+			  100% { -webkit-transform: rotate(360deg); }
+			}
+
+			@keyframes spin {
+			  0% { transform: rotate(0deg); }
+			  100% { transform: rotate(360deg); }
+			}
+
+			/* Add animation to "page content" */
+			.animate-bottom {
+			  position: relative;
+			  -webkit-animation-name: animatebottom;
+			  -webkit-animation-duration: 1s;
+			  animation-name: animatebottom;
+			  animation-duration: 1s
+			}
+
+			@-webkit-keyframes animatebottom {
+			  from { bottom:-100px; opacity:0 } 
+			  to { bottom:0px; opacity:1 }
+			}
+
+			@keyframes animatebottom { 
+			  from{ bottom:-100px; opacity:0 } 
+			  to{ bottom:0; opacity:1 }
+			}
+
+			#myDiv {
+			  display: block;
+			}
+		</style>
+	</head>
+	<body onload="des();">
+		<div id="loader"></div>
+		<div class="container-fluid" id="myDiv">
+			<a>
+				<span href="{% url 'inicio' %}" style="font-size: 48px">
+					<i class="fa fa-home"></i>
+				</span>
+			</a>
+			<a>
+				<span onclick="javascript:history.go(-1);" style="font-size: 48px">
+					<i class="fa fa-arrow-left"></i>
+				</span>
+			</a>
+			<h1>Cargue la imagen que desea analizar</h1>
+			<!-- <form class="was-validated" action="{% url 'ver_diagnostico2'%}" method="post" enctype="multipart/form-data"> -->
+			{% csrf_token %}
+			
+			<div class="form-group">
+				<input id="input-b1" name="nombre" capture="camera" type="file" class="file" data-browse-on-zone-click= "true" #fileUploader >
+				
+				<!-- <button type="button" onclick="location.href='{% url 'inicio' %}';" class="fa fa-home"></button>
+				<button type="button" onclick="javascript:history.go(-1);" class="fa fa-arrow-left" size="9x"></button> -->
+			</div>
+			<div >
+		        <!-- <button type="submit">Analizar</button> -->
+		        <button class="btn btn-primary" onclick="OpenModal();">Analizar</button>
+		    </div>
+			<!-- </form> -->
+		</div>
+		<!-- Modal -->
+  		<div class="modal fade" id="myModal" role="dialog">
+    		<div class="modal-dialog">
+      			<!-- Modal content-->
+      			<div class="modal-content">
+        			<div class="modal-header">
+			        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+			          	<h4 class="modal-title">Resultado</h4>
+        			</div>
+			        <div class="modal-body">
+				        <!-- <p>La probabilidad del paciente de padecer {{resultado.resultado }} es del:</p>
+				        <p>{{resultado.probabilidad }}%</p> -->
+			        </div>
+			        <div class="modal-footer">
+			          	<button type="button" class="btn btn-default" data-dismiss="modal">Aceptar</button>
+			        </div>
+      			</div>
+    		</div>
+  		</div>
+	</body>
+
+	{% block javascript %}
+		<script>
+
+			function OpenModal(){
+				document.getElementById('myDiv').style.display= "none";
+				// document.getElementById('loader').style.display= "block";
+
+				document.getElementById("loader").style.display = "initial";
+				console.log(Cookies.get().csrftoken)
+				
+				var input = document.getElementById('input-b1');
+
+				console.log(input.files[0]);
+				var formData = new FormData();
+				formData.append("file", input.files[0])
+				console.log(formData)
+
+				$.ajax({
+					headers: { "X-CSRFToken": Cookies.get().csrftoken
+					 },
+				    url:"{% url 'ver_diagnostico2'%}",
+				    contentType: false,
+				    type: "POST",
+				    data: formData,
+				    cache : false,
+				    processData: false
+				}).done(function(data){ 
+					var input = document.getElementById('input-b1');
+					console.log("la imagen 1")
+					console.log(input.files[0]);
+					
+					document.getElementById("loader").style.display = "none";
+					document.getElementById('myDiv').style.display= "initial";
+					console.log("EL QUE QUIERO")
+					console.log(data.resultado)
+					console.log("la imagen src")
+					var img = $('#input-b1');
+				    /* Asignamos el atributo source , haciendo uso del método createObjectURL*/
+						img.attr('src', URL.createObjectURL(input.files[0]));
+				    /* Añadimos al Div*/
+				    console.log("la imagen src")
+					console.log(img)
+					$('#preview').append(img);
+					console.log("la url")
+					console.log(img[0].attributes.src.value)
+
+					var ms = '<div><p>La probabilidad de que sea un Nevus de tipo </p> <h1>' + data.resultado + '</h1> <p>es del:</p>\n'+'<h1>'+ (parseFloat(data.probabilidad)*100).toFixed(2) +' %</h1> <img src = '+img[0].attributes.src.value+'></img></div>';
+					var $el4 = $('#input-b1')
+			 		$el4.fileinput('clear');
+					$(".modal-body").html(ms);
+					$('#myModal').modal();
+					// $('#input-b1').val('');
+					console.log(data)
+				    // alert(data);
+				}).fail(function(error){
+					var $el4 = $('#input-b1')
+			 		$el4.fileinput('clear');
+			 		var ms = '<p>Ha ocurrido un error, intente nuevamente</p>';
+					 
+					$(".modal-body").html(ms);
+					$('#myModal').modal();
+					document.getElementById("loader").style.display = "none";
+					document.getElementById('myDiv').style.display= "initial";
+				    // alert('error');
+				});
+			}
+		</script>		
+	{% endblock %}
+</html>
+{% endblock %}

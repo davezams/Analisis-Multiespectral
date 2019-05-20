@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block head_title %}Recipes Paciente{% endblock %}
+{% block paciente_activo %}active{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+  {% if success_msg %}
+  <div class="alert alert-success">
+    <strong>{{ success_msg }}</strong>
+  </div>
+  {% endif %}
+  <div class="row-fluid">
+    <h2>Recipes</h2>
+  </div>
+  <div class="row-fluid">
+    <ul class="nav pull-right">
+      <li >
+        <a href="{% url 'registrar_recipe' paciente_id.id %}" >
+          <i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Recipe
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="container">
+  <div class="row-fluid">
+    <div class="col-md-3">
+      <img src="{{ paciente_id.foto_paciente.url }}" class="img-rounded img-responsive"><h3>{{paciente_id.nombres}} {{paciente_id.apellidos}}</h3>
+    </div>
+    <div class="col-md-9">
+      {% if recipes %}
+      <div id="diags" class="list-group">
+        {% for i, r in recipes %}
+        <div id="r_id_{{r.id}}" href="#" class="list-group-item">
+          <h4  class="list-group-item-heading"> Recipe No. {{r.pk}}</h4>
+          <p class="list-group-item-text" style="display:none">
+            <a href="{% url 'eliminar_recipe' r.id %}" ><i class="bigicons fa fa-trash-o pull-right" aria-hidden="true"></i></a>
+          <b>Recipe:</b><br/>
+            {{r.recipe}}
+          <br/><br/>
+          <b>Indicaciones:</b><br/>
+            {{r.indicaciones}}
+          </p>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <h2>
+        <p class="bg-warning">
+          No ha registrado recipes para el paciente
+        </p>
+      </h2>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

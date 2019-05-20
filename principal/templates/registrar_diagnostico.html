@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block head_title %}Diagnostico{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row-fluid">
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h3>Evaluación</h3>
+          {% if error_message %}
+          <p><strong>{{ error_message }}</strong></p>
+          {% endif %}
+          <form class="" role="form" action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+              <label>Paciente: </label>&nbsp;{{paciente_id.nombres}} {{paciente_id.apellidos}}
+            </div>
+            {% include 'plantilla_registro_campo.html' %}
+            <h3>Fotos de diagnóstico</h3>
+            <div id="photos_input_list">
+              <input id="foto_diag_1" name="foto_diag_1" type="file">
+            </div>
+            <a id="del_file_entry" href="#" class="pull-right" title="Eliminar ultima foto">
+              <i class="fa fa-minus-square-o" aria-hidden="true"></i>
+            </a>
+            <a id="add_file_entry" href="#" class="pull-right" title="Agregar otra foto">
+              <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            </a><br/>
+            <div class="form-group col-md-5" style="clear:left">
+              <div class="col-md-offset-2 ">
+                <button type="button" onclick="javascript:history.go(-1);" class="btn btn-warning">Atrás</button>&nbsp;&nbsp;
+                <button type="submit" class="btn btn-success">Guardar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block head_title %}Principal{% endblock %}
+{% block paciente_activo %}active{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="container">
+  {% if success_msg %}
+  <div class="alert alert-success">
+    <strong>{{ success_msg }}</strong>
+  </div>
+  {% endif %}
+  <div class="row-fluid">
+    <h2>Historia Dermatológica</h2>
+  </div>
+  <div class="row-fluid">
+    <ul class="nav pull-right">
+      <li>
+        <a href="{% url 'agregar_diagnostico' paciente_id.id %}">
+          <i class="fa fa-plus" aria-hidden="true"></i>&nbsp; Diagnóstico
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="container">
+  <div class="row-fluid">
+    <div class="col-md-3">
+      <img src="{{ paciente_id.foto_paciente.url }}" class="img-rounded img-responsive"><h3>{{paciente_id.nombres}} {{paciente_id.apellidos}}</h3>
+    </div>
+    <div class="col-md-9">
+      {% if diagnosticos %}
+      <div id="diags" class="list-group">
+        {% for i, d in diagnosticos %}
+        <div id="d_id_{{d.id}}" href="#" class="list-group-item">
+          <h4  class="list-group-item-heading">{{d.creado}} - {{d.get_headline}}</h4>
+          <p class="list-group-item-text" style="display:none">
+            <a href="{% url 'eliminar_diagnostico' d.id %}" ><i class="bigicons fa fa-trash-o pull-right" aria-hidden="true"></i></a>
+            <a href="{% url 'editar_diagnostico' d.id %}" ><i href="#" class="bigicons fa fa-pencil-square-o pull-right" aria-hidden="true"></i></a>
+            <a href="#"> <i class="bigicons fa fa-eye pull-right" aria-hidden="true" data-toggle="modal" data-target="#modal_{{d.id}}"></i></a>
+          <b>Antecedentes:</b><br/>
+            {{d.antecedentes}}
+          <br/><br/>
+          <b>Examen Dermatológico:</b><br/>
+            {{d.examen_dermatologico}}
+          </p>
+          {% if d.get_fotos %}
+          <div id="photos_diag_id_{{d.id}}" class="photos_diag_div" style="display:none">
+          {% for fd in d.get_fotos %}
+            <img href="#" id="foto_{{fd.id}}" class="img-thumbnail" src="{{fd.foto.url}}" style="height: 180px; width: 171px; display: block;">
+          {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        <div id="photos_modals">
+          {% for i, fd in d.get_fotos_con_indice %}
+            <div id="dialogo_foto_{{fd.id}}" class="foto-dialogo" title="Foto no. {{i}} del diagnóstico">
+              <p>
+                <img src="{{fd.foto.url}}" style="width:100%;height:100%;">
+              </p>
+            </div>
+          {% endfor %}
+        </div>
+        <div id="modal_{{d.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-body">
+                <p>
+                  <b>Fecha de Registro:</b><br/>
+                  {{d.creado|date:'d/m/Y P'}}
+                  <br/><br/>
+                  <b>Peso (Kg):</b><br/>
+                  {{d.peso|floatformat:-2}}
+                  <br/><br/>
+                  <b>Talla (cm):</b><br/>
+                  {{d.estatura|floatformat:-2}}
+                  <br/><br/>
+                  <b>Indice de Masa Corporal:</b><br/>
+                  {{d.imc|floatformat:-2}}
+                  <br/><br/>
+                  <b>Antecedentes:</b><br/>
+                  {{d.antecedentes}}
+                  <br/><br/>
+                  <b>Examen Dermatológico:</b><br/>
+                  {{d.examen_dermatologico}}
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <h2>
+        <p class="bg-warning">
+          No ha registrado diagnósticos para el paciente
+        </p>
+      </h2>
+      {% endif %}
+    </div>
+
+  </div>
+</div>
+{% endblock %}
